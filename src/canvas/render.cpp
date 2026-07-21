@@ -1555,7 +1555,7 @@ static std::string layer_to_string(int l)
     case BoardLayers::BOTTOM_COPPER:
         return "B";
     default:
-        if (l < BoardLayers::TOP_COPPER && l > BoardLayers::BOTTOM_COPPER) {
+        if (BoardLayers::is_inner_copper(l)) {
             return "I" + std::to_string(-l);
         }
     }

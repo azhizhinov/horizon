@@ -54,6 +54,11 @@ public:
         return l <= TOP_COPPER && l >= BOTTOM_COPPER;
     }
 
+    static bool is_inner_copper(int l)
+    {
+        return l < TOP_COPPER && l > BOTTOM_COPPER;
+    }
+
     static bool is_copper(const LayerRange &l)
     {
         return is_copper(l.start()) || is_copper(l.end());

@@ -99,9 +99,7 @@ void GerberOutputSettings::update_for_board(const Board &brd)
     add_layer(BoardLayers::TOP_MASK);
     add_layer(BoardLayers::TOP_COPPER);
     for (const auto &la : layers_from_board) {
-        if ((BoardLayers::is_copper(la.first) && la.first > BoardLayers::BOTTOM_COPPER
-             && la.first < BoardLayers::TOP_COPPER)
-            || BoardLayers::is_user(la.first))
+        if (BoardLayers::is_inner_copper(la.first) || BoardLayers::is_user(la.first))
             add_layer(la.first);
     }
     add_layer(BoardLayers::BOTTOM_COPPER);
@@ -118,7 +116,7 @@ static std::string layer_to_string_for_drill(int l)
     case BoardLayers::BOTTOM_COPPER:
         return "bottom";
     default:
-        if (l < BoardLayers::TOP_COPPER && l > BoardLayers::BOTTOM_COPPER) {
+        if (BoardLayers::is_inner_copper(l)) {
             return "inner" + std::to_string(-l);
         }
     }

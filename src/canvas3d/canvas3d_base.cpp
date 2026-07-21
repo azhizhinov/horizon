@@ -136,7 +136,7 @@ bool Canvas3DBase::layer_is_visible(int layer) const
     }
 
 
-    if (layer < BoardLayers::TOP_COPPER && layer > BoardLayers::BOTTOM_COPPER)
+    if (BoardLayers::is_inner_copper(layer))
         return (show_substrate == false || explode > 0) && show_copper;
 
     if (BoardLayers::is_copper(layer))

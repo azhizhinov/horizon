@@ -87,7 +87,7 @@ std::string get_layer_name(int id, const LayerProvider &lprv)
     else if (id == BoardLayers::BOTTOM_COPPER) {
         return "signal_bottom";
     }
-    else if (id < BoardLayers::TOP_COPPER && id > BoardLayers::BOTTOM_COPPER) {
+    else if (BoardLayers::is_inner_copper(id)) {
         return "signal_inner_" + std::to_string(-id);
     }
     else if (id == BoardLayers::TOP_SILKSCREEN) {

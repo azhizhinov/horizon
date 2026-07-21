@@ -727,9 +727,7 @@ void Board::update_pdf_export_settings(PDFExportSettings &settings)
     add_layer(BoardLayers::TOP_PACKAGE, false);
     add_layer(BoardLayers::TOP_COPPER, false);
     for (const auto &la : layers_from_board) {
-        if ((BoardLayers::is_copper(la.first) && la.first > BoardLayers::BOTTOM_COPPER
-             && la.first < BoardLayers::TOP_COPPER)
-            || BoardLayers::is_user(la.first))
+        if (BoardLayers::is_inner_copper(la.first) || BoardLayers::is_user(la.first))
             add_layer(la.first, BoardLayers::is_user(la.first));
     }
     add_layer(BoardLayers::BOTTOM_COPPER, false);
