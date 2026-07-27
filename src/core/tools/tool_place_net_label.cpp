@@ -62,7 +62,17 @@ void ToolPlaceNetLabel::apply_settings()
 
 bool ToolPlaceNetLabel::update_attached(const ToolArgs &args)
 {
-    if (args.type == ToolEventType::ACTION) {
+    if (args.type == ToolEventType::MOVE) {
+        if (args.target.type == ObjectType::SYMBOL_PIN) {
+            auto &schsym = doc.c->get_sheet()->symbols.at(args.target.path.at(0));
+            auto &pin = schsym.symbol.pins.at(args.target.path.at(1));
+            UUIDPath<2> connpath(schsym.gate->uuid, args.target.path.at(1));
+            if (schsym.component->connections.count(connpath) == 0) {
+                la->orientation = pin.orientation;
+            }
+        }
+    }
+    else if (args.type == ToolEventType::ACTION) {
         switch (args.action) {
         case InToolActionID::LMB:
             if (args.target.type == ObjectType::JUNCTION) {
