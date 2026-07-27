@@ -1296,6 +1296,7 @@ void ImpBase::handle_cursor_move(const Coordi &pos)
         args.type = ToolEventType::MOVE;
         args.coords = pos;
         args.work_layer = canvas->property_work_layer();
+        args.target = canvas->get_current_target();
         ToolResponse r = core->tool_update(args);
         tool_process(r);
     }
