@@ -37,6 +37,7 @@ versions:
   package:
     1: package-defined solder mask & paste parameters override board parameters
     2: add heights
+    3: allow mirroring pads
   project:
     1: replace pool cache with project pool
     2: add hierarchy

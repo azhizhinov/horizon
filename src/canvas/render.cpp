@@ -1220,6 +1220,9 @@ void Canvas::render(const Pad &pad)
 {
     transform_save();
     transform.accumulate(pad.placement);
+    if (pad.placement.mirror)
+        transform.invert_angle();
+
     img_net(pad.net);
     if (pad.padstack.type == Padstack::Type::THROUGH)
         img_patch_type(PatchType::PAD_TH);
@@ -1359,6 +1362,8 @@ void Canvas::render_pad_overlay(const Pad &pad, bool interactive)
     }
     transform_save();
     transform.accumulate(pad.placement);
+    if (pad.placement.mirror)
+        transform.invert_angle();
     auto a = bb.first;
     auto b = bb.second;
     transform.accumulate(Placement((a + b) / 2));

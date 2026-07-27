@@ -21,7 +21,7 @@ ToolResponse ToolPlacePad::begin(const ToolArgs &args)
         imp->tool_bar_set_actions({
                 {InToolActionID::LMB},
                 {InToolActionID::RMB},
-                {InToolActionID::ROTATE},
+                {InToolActionID::ROTATE, InToolActionID::MIRROR, "rotate/mirror"},
                 {InToolActionID::EDIT, "edit pad"},
         });
         return ToolResponse();
@@ -75,7 +75,14 @@ ToolResponse ToolPlacePad::update(const ToolArgs &args)
             return ToolResponse::commit();
 
         case InToolActionID::ROTATE:
-            temp->placement.inc_angle_deg(90);
+            if (temp->placement.mirror)
+                temp->placement.inc_angle_deg(-90);
+            else
+                temp->placement.inc_angle_deg(90);
+            break;
+
+        case InToolActionID::MIRROR:
+            temp->placement.mirror = !temp->placement.mirror;
             break;
 
         case InToolActionID::EDIT: {

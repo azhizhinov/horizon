@@ -122,6 +122,7 @@ bool CorePackage::get_property(ObjectType type, const UUID &uu, ObjectProperty::
         case ObjectProperty::ID::POSITION_X:
         case ObjectProperty::ID::POSITION_Y:
         case ObjectProperty::ID::ANGLE:
+        case ObjectProperty::ID::MIRROR:
             get_placement(pad->placement, value, property);
             return true;
 
@@ -173,6 +174,7 @@ bool CorePackage::set_property(ObjectType type, const UUID &uu, ObjectProperty::
         case ObjectProperty::ID::POSITION_X:
         case ObjectProperty::ID::POSITION_Y:
         case ObjectProperty::ID::ANGLE:
+        case ObjectProperty::ID::MIRROR:
             set_placement(pad->placement, value, property);
             break;
 

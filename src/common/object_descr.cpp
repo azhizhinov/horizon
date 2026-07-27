@@ -253,6 +253,7 @@ const std::map<ObjectType, ObjectDescription> object_descriptions = {
                   {ObjectProperty::ID::ANGLE, {ObjectProperty::Type::ANGLE, "Angle", 5}},
                   {ObjectProperty::ID::POSITION_X, {ObjectProperty::Type::DIM, "Position X", 3}},
                   {ObjectProperty::ID::POSITION_Y, {ObjectProperty::Type::DIM, "Position Y", 4}},
+                  {ObjectProperty::ID::MIRROR, {ObjectProperty::Type::BOOL, "Mirror", 5}},
           }}},
         {ObjectType::BOARD_HOLE,
          {"Hole",

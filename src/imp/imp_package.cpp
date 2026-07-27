@@ -672,6 +672,10 @@ bool ImpPackage::set_filename()
 
 unsigned int ImpPackage::get_required_version() const
 {
+    for (const auto &[uu, pad] : package.pads) {
+        if (pad.placement.mirror)
+            return 3;
+    }
     for (auto &[uu, model] : core_package.models) {
         if (model.height_bot || model.height_top)
             return 2;

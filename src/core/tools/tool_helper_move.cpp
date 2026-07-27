@@ -372,7 +372,13 @@ void ToolHelperMove::move_mirror_or_rotate(const Coordi &center, bool rotate)
             auto &pad = doc.k->get_package().pads.at(it.uuid);
             transform(pad.placement.shift, center, rotate);
             if (rotate) {
-                pad.placement.inc_angle_deg(-90);
+                if (pad.placement.mirror)
+                    pad.placement.inc_angle_deg(90);
+                else
+                    pad.placement.inc_angle_deg(-90);
+            }
+            else {
+                pad.placement.mirror = !pad.placement.mirror;
             }
         } break;
 

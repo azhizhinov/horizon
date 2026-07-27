@@ -125,7 +125,7 @@ int Package::Model::get_rotation(unsigned int ax) const
     }
 }
 
-static const unsigned int app_version = 2;
+static const unsigned int app_version = 3;
 
 unsigned int Package::get_app_version()
 {
@@ -599,6 +599,10 @@ std::vector<const Pad *> Package::get_pads_sorted() const
 
 unsigned int Package::get_required_version() const
 {
+    for (const auto &[uu, pad] : pads) {
+        if (pad.placement.mirror)
+            return 3;
+    }
     for (const auto &[uu, model] : models) {
         if (model.height_bot || model.height_top)
             return 2;
