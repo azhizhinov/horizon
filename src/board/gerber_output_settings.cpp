@@ -41,6 +41,10 @@ GerberOutputSettings::GerberLayer::GerberLayer(int l) : layer(l)
     case BoardLayers::BOTTOM_PASTE:
         filename = ".gbp";
         break;
+    default:
+        if (BoardLayers::is_inner_copper(l))
+            filename = ".g" + std::to_string(-l + 1) + "l";
+        break;
     }
 }
 
