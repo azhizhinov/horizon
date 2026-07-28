@@ -7,6 +7,7 @@
 #include "core/tool_id.hpp"
 #include "core/tool_data_window.hpp"
 #include "dialogs/edit_plane_window.hpp"
+#include "util/polygon_arc_removal_proxy.hpp"
 
 namespace horizon {
 
@@ -53,6 +54,40 @@ bool ToolEditPlane::can_begin()
     }
 }
 
+static ClipperLib::Path polygon_to_path(const Polygon &ipoly)
+{
+    PolygonArcRemovalProxy prx(ipoly);
+    const auto &vs = prx.get().vertices;
+    ClipperLib::Path out;
+    out.reserve(vs.size());
+    for (const auto &v : vs) {
+        out.emplace_back(v.position.x, v.position.y);
+    }
+
+    return out;
+}
+
+static Net *get_net_for_polygon(Board &brd, const Polygon &poly)
+{
+    auto path = polygon_to_path(poly);
+    std::map<Net *, unsigned int> net_count;
+    for (auto &[uu_pkg, pkg] : brd.packages) {
+        for (auto &[uu_pad, pad] : pkg.package.pads) {
+            if (!pad.net)
+                continue;
+            Track::Connection conn(&pkg, &pad);
+            auto p = conn.get_position();
+            if (conn.get_layer().overlaps(poly.layer) && ClipperLib::PointInPolygon({p.x, p.y}, path))
+                net_count[pad.net]++;
+        }
+    }
+    if (net_count.empty())
+        return nullptr;
+    auto m = std::max_element(net_count.begin(), net_count.end(), [](auto &a, auto &b) { return a.second < b.second; });
+    return m->first;
+}
+
+
 ToolResponse ToolEditPlane::begin(const ToolArgs &args)
 {
     auto poly = get_poly();
@@ -82,6 +117,7 @@ ToolResponse ToolEditPlane::begin(const ToolArgs &args)
                 dynamic_cast<const BoardRules &>(*doc.b->get_rules()).get_plane_settings(nullptr, poly->layer);
         plane->polygon = poly;
         poly->usage = plane;
+        plane->net = get_net_for_polygon(*brd, *poly);
     }
     show_edit_plane_window(*plane, *brd);
     return ToolResponse();
