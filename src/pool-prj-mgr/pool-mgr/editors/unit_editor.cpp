@@ -270,7 +270,6 @@ void UnitEditor::handle_add()
         pin->swap_group = pin_selected->swap_group;
         pin->direction = pin_selected->direction;
         pin->primary_name = inc_pin_name(pin_selected->primary_name);
-        pin->names = pin_selected->names;
     }
 
     int index = 0;
